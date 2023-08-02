@@ -6,6 +6,7 @@
 //!
 //! ## Usage
 
+#![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![warn(missing_docs)]
 
 pub use api::DehashedApi;
