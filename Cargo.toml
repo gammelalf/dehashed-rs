@@ -15,5 +15,16 @@ reqwest = { version = "~0.11", features = ["json"] }
 # Serialization library
 serde = { version = "~1", features = ["derive"] }
 
+# Logging framework
+log = { version = "~0.4" }
+
+# Async runtime
+tokio = { version = ">=1.23", features = ["sync"], optional = true }
+
 [dev-dependencies]
-tokio = { version = ">=1.23", features = ["rt", "macros"] }
+tokio = { version = ">=1.23", features = ["rt", "macros", "sync"] }
+env_logger = { version = "~0.10" }
+
+[features]
+default = []
+tokio = ["dep:tokio"]
