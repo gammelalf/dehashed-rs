@@ -25,7 +25,7 @@ tokio = { version = ">=1.23.1", features = ["sync"], optional = true }
 rustc_version = { version = "~0.4" }
 
 [dev-dependencies]
-tokio = { version = ">=1.23", features = ["rt", "macros", "sync"] }
+tokio = { version = ">=1.23.1", features = ["rt", "macros", "sync"] }
 env_logger = { version = "~0.10" }
 
 [features]
