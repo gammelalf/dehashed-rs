@@ -3,7 +3,7 @@ use std::net::IpAddr;
 use std::str::FromStr;
 use std::time::Duration;
 
-use log::{debug, error, info, warn};
+use log::{debug, error};
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::{Client, StatusCode};
 
@@ -26,12 +26,18 @@ fn escape(q: &str) -> String {
     s
 }
 
+/// A specific search type
 #[derive(Clone, Debug)]
 pub enum SearchType {
+    /// Search for a simple pattern
     Simple(String),
+    /// Search for an exact pattern
     Exact(String),
+    /// A regex search pattern
     Regex(String),
+    /// Add multiple [SearchType]s with an OR
     Or(Vec<SearchType>),
+    /// Add multiple [SearchType]s with an AND
     And(Vec<SearchType>),
 }
 
@@ -55,17 +61,28 @@ impl ToString for SearchType {
     }
 }
 
+/// A query for dehashed
 #[derive(Clone, Debug)]
 pub enum Query {
+    /// Search for an email
     Email(SearchType),
+    /// Search for an ip address
     IpAddress(SearchType),
+    /// Search for an username
     Username(SearchType),
+    /// Search for an password
     Password(SearchType),
+    /// Search for an hashed password
     HashedPassword(SearchType),
+    /// Search for a name
     Name(SearchType),
+    /// Search for a domain
     Domain(SearchType),
+    /// Search for a vin
     Vin(SearchType),
+    /// Search for a phone
     Phone(SearchType),
+    /// Search for an address
     Address(SearchType),
 }
 
@@ -100,15 +117,25 @@ pub struct SearchResult {
 pub struct SearchEntry {
     /// ID of the entry
     pub id: u64,
+    /// An email address, may be [None] if the result didn't include this field
     pub email: Option<String>,
+    /// An username, may be [None] if the result didn't include this field
     pub username: Option<String>,
+    /// A password, may be [None] if the result didn't include this field
     pub password: Option<String>,
+    /// An hashed password, may be [None] if the result didn't include this field
     pub hashed_password: Option<String>,
+    /// An ip address, may be [None] if the result didn't include this field
     pub ip_address: Option<IpAddr>,
+    /// A name, may be [None] if the result didn't include this field
     pub name: Option<String>,
+    /// A vin, may be [None] if the result didn't include this field
     pub vin: Option<String>,
+    /// An address, may be [None] if the result didn't include this field
     pub address: Option<String>,
+    /// A phone, may be [None] if the result didn't include this field
     pub phone: Option<String>,
+    /// A database name, may be [None] if the result didn't include this field
     pub database_name: Option<String>,
 }
 
