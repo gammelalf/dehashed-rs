@@ -6,9 +6,13 @@ use std::time::Duration;
 use log::{debug, error};
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::{Client, StatusCode};
+#[cfg(feature = "tokio")]
+use tokio::time::sleep;
 
 use crate::error::DehashedError;
 use crate::res::{Entry, Response};
+#[cfg(feature = "tokio")]
+use crate::Scheduler;
 
 const URL: &str = "https://api.dehashed.com/search";
 const RESERVED: [char; 21] = [
@@ -21,6 +25,8 @@ fn escape(q: &str) -> String {
     for c in q.chars() {
         if RESERVED.contains(&c) {
             s.write_str("\\{c}").unwrap();
+        } else {
+            s.write_char(c).unwrap();
         }
     }
     s
@@ -199,8 +205,7 @@ impl TryFrom<Entry> for SearchEntry {
     }
 }
 
-/// The instance
-/// TODO:
+/// The instance of the dehashed api
 #[derive(Clone, Debug)]
 pub struct DehashedApi {
     email: String,
@@ -259,7 +264,15 @@ impl DehashedApi {
         } else if status == StatusCode::from_u16(401).unwrap() {
             Err(DehashedError::Unauthorized)
         } else if status == StatusCode::from_u16(200).unwrap() {
-            Ok(res.json().await?)
+            let raw = res.text().await?;
+
+            match serde_json::from_str(&raw) {
+                Ok(result) => Ok(result),
+                Err(err) => {
+                    error!("Error deserializing data: {err}. Raw data: {raw}");
+                    Err(DehashedError::Unknown)
+                }
+            }
         } else {
             Err(DehashedError::Unknown)
         }
@@ -269,6 +282,8 @@ impl DehashedApi {
     ///
     /// Please note, that dehashed has a ratelimit protection active, that bans every account
     /// that is doing more than 5 req / s.
+    ///
+    /// This method will take care of pagination and will delay requests if necessary.
     pub async fn search(&self, query: Query) -> Result<SearchResult, DehashedError> {
         let q = query.to_string();
         debug!("Query: {q}");
@@ -294,8 +309,20 @@ impl DehashedApi {
             if res.total < page * 10_000 {
                 break;
             }
+
+            #[cfg(feature = "tokio")]
+            sleep(Duration::from_millis(200)).await;
         }
 
         Ok(search_result)
+    }
+
+    /// Start a new scheduler.
+    ///
+    /// The [Scheduler] manages stay in bounds of the rate limit of the unhashed API.
+    /// It lets you push queries and receive the results.
+    #[cfg(feature = "tokio")]
+    pub fn start_scheduler(&self) -> Scheduler {
+        Scheduler::new(self)
     }
 }

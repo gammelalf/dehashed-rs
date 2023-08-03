@@ -11,9 +11,13 @@
 
 pub use api::*;
 pub use error::DehashedError;
+#[cfg(feature = "tokio")]
+pub use scheduler::*;
 
 mod api;
 mod error;
 pub(crate) mod res;
+#[cfg(feature = "tokio")]
+mod scheduler;
 #[cfg(test)]
 mod tests;
