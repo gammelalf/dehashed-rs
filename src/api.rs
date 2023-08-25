@@ -6,6 +6,7 @@ use std::time::Duration;
 use log::{debug, error};
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::{Client, StatusCode};
+use serde::{Deserialize, Serialize};
 #[cfg(feature = "tokio")]
 use tokio::time::sleep;
 
@@ -33,7 +34,8 @@ fn escape(q: &str) -> String {
 }
 
 /// A specific search type
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 pub enum SearchType {
     /// Search for a simple pattern
     Simple(String),
@@ -68,7 +70,8 @@ impl ToString for SearchType {
 }
 
 /// A query for dehashed
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 pub enum Query {
     /// Search for an email
     Email(SearchType),
@@ -110,7 +113,8 @@ impl ToString for Query {
 }
 
 /// The result of a search query
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 pub struct SearchResult {
     /// A list of results
     pub entries: Vec<SearchEntry>,
@@ -119,7 +123,8 @@ pub struct SearchResult {
 }
 
 /// A single entry in a [SearchResult]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 pub struct SearchEntry {
     /// ID of the entry
     pub id: u64,
