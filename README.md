@@ -60,6 +60,8 @@ if let Ok(res) = ret_rx.await {
 }
 ```
 
+If you need type definitions for utoipa, there available under the feature flag `utoipa`.
+
 ## Note
 
 **This is not an official API**

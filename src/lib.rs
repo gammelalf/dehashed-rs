@@ -57,6 +57,8 @@
 //!     println!("{res:?}");
 //! }
 //! ```
+//!
+//! If you need type definitions for utoipa, there available under the feature flag `utoipa`.
 
 #![cfg_attr(all(doc, CHANNEL_NIGHTLY), feature(doc_auto_cfg))]
 #![warn(missing_docs)]
