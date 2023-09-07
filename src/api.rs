@@ -25,7 +25,7 @@ fn escape(q: &str) -> String {
     let mut s = String::new();
     for c in q.chars() {
         if RESERVED.contains(&c) {
-            s.write_str("\\{c}").unwrap();
+            s.write_str(&format!("\\{c}")).unwrap();
         } else {
             s.write_char(c).unwrap();
         }
