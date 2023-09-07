@@ -305,8 +305,10 @@ impl DehashedApi {
                 return Err(DehashedError::Unknown);
             }
 
-            for entry in res.entries {
-                search_result.entries.push(entry.try_into()?)
+            if let Some(entries) = res.entries {
+                for entry in entries {
+                    search_result.entries.push(entry.try_into()?)
+                }
             }
 
             search_result.balance = res.balance;

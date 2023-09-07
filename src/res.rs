@@ -18,7 +18,7 @@ pub(crate) struct Entry {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub(crate) struct Response {
     pub(crate) balance: usize,
-    pub(crate) entries: Vec<Entry>,
+    pub(crate) entries: Option<Vec<Entry>>,
     pub(crate) success: bool,
     pub(crate) took: String,
     pub(crate) total: usize,
