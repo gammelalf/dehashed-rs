@@ -1,7 +1,7 @@
 [package]
 name = "dehashed-rs"
 edition = "2021"
-version = "0.3.2"
+version = "0.4.0"
 repository = "https://github.com/myOmikron/dehashed-rs"
 authors = ["Niklas Pfister <git@omikron.dev>"]
 license = "MPL-2.0"
@@ -23,7 +23,7 @@ log = { version = "~0.4" }
 tokio = { version = ">=1.23.1", features = ["sync"], optional = true }
 
 # Openapi generator
-utoipa = { version = "~3", optional = true }
+utoipa = { version = "~4", optional = true }
 
 [package.metadata.docs.rs]
 features = ["tokio", "utoipa"]
