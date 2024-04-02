@@ -36,6 +36,7 @@ fn escape(q: &str) -> String {
 /// A specific search type
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub enum SearchType {
     /// Search for a simple pattern
     Simple(String),
@@ -72,6 +73,7 @@ impl ToString for SearchType {
 /// A query for dehashed
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub enum Query {
     /// Search for an email
     Email(SearchType),
@@ -115,6 +117,7 @@ impl ToString for Query {
 /// The result of a search query
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct SearchResult {
     /// A list of results
     pub entries: Vec<SearchEntry>,
@@ -125,6 +128,7 @@ pub struct SearchResult {
 /// A single entry in a [SearchResult]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
+#[cfg_attr(feature = "schemars", derive(schemars::JsonSchema))]
 pub struct SearchEntry {
     /// ID of the entry
     pub id: u64,
