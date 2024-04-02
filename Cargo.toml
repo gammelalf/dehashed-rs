@@ -1,7 +1,7 @@
 [package]
 name = "dehashed-rs"
 edition = "2021"
-version = "0.4.0"
+version = "0.5.0"
 repository = "https://github.com/myOmikron/dehashed-rs"
 authors = ["Niklas Pfister <git@omikron.dev>"]
 license = "MPL-2.0"
@@ -10,7 +10,7 @@ description = "A rust library for the dehashed API"
 
 [dependencies]
 # HTTP library
-reqwest = { version = "~0.11" }
+reqwest = { version = "~0.12" }
 
 # Serialization library
 serde = { version = "~1", features = ["derive"] }
@@ -29,7 +29,7 @@ utoipa = { version = "~4", optional = true }
 schemars = { version = "~0.8", optional = true }
 
 [package.metadata.docs.rs]
-features = ["tokio", "utoipa"]
+features = ["tokio", "utoipa", "schemars"]
 
 [build-dependencies]
 rustc_version = { version = "~0.4" }
